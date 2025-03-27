@@ -16,13 +16,33 @@ let solve a b c =
         if D<0 then None
         else Quadratic(((-b+sqrt(D))/(2.* a), (-b-sqrt(D))/(2.*a)))
 
+
+let areaCircle radius = 
+    Math.PI * radius * radius
+
+let multiplyAreaHeight area height =
+    area * height
+
+let volumeCylinderSuperPos =
+    areaCircle >> multiplyAreaHeight
+
+let volumeCylinderCurr radius height =
+    (areaCircle radius) * height
+
+
+
 [<EntryPoint>]
 let main argv = 
-    let res = solve 5 52 3
-    match res with
-         None -> Console.WriteLine("Нет решений")
-         | Linear(x) -> Console.WriteLine($"Линейное уравнение, корень: {x}.")
-         | Quadratic(x1, x2) -> Console.WriteLine($"Квадратичное уравнение, корни: {x1}, {x2}.")
+    Console.Write("Радиус = ")
+    let radius = Console.ReadLine() |> float
+    Console.Write("Высота = ")
+    let height = Console.ReadLine() |> float
+    Console.WriteLine($"Площадь круга: {areaCircle radius}")
+    Console.WriteLine($"Объем цилиндра: {volumeCylinderSuperPos radius height}")
+    Console.WriteLine()
+    Console.WriteLine($"Площадь круга: {areaCircle radius}")
+    Console.WriteLine($"Объем цилиндра: {volumeCylinderCurr radius height}")
+
 
 
     0
