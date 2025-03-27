@@ -29,20 +29,17 @@ let volumeCylinderSuperPos =
 let volumeCylinderCurr radius height =
     (areaCircle radius) * height
 
+let rec sumDigitsUp num =
+    if num = 0 then 0
+    else (num % 10) + sumDigitsUp (num / 10)
+
 
 
 [<EntryPoint>]
 let main argv = 
-    Console.Write("Радиус = ")
-    let radius = Console.ReadLine() |> float
-    Console.Write("Высота = ")
-    let height = Console.ReadLine() |> float
-    Console.WriteLine($"Площадь круга: {areaCircle radius}")
-    Console.WriteLine($"Объем цилиндра: {volumeCylinderSuperPos radius height}")
-    Console.WriteLine()
-    Console.WriteLine($"Площадь круга: {areaCircle radius}")
-    Console.WriteLine($"Объем цилиндра: {volumeCylinderCurr radius height}")
-
+    Console.Write("Введите число: ")
+    let num = Console.ReadLine() |> int
+    Console.WriteLine($"Сумма цифр числа: {sumDigitsUp num}")
 
 
     0
