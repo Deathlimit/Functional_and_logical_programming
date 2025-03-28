@@ -33,13 +33,20 @@ let rec sumDigitsUp num =
     if num = 0 then 0
     else (num % 10) + sumDigitsUp (num / 10)
 
+let sumDigitsDown num =
+    let rec sumDigitsDownLoop accomul num =
+        if num = 0 then accomul
+        else sumDigitsDownLoop (accomul + num % 10) (num / 10)
+    sumDigitsDownLoop 0 num
+
 
 
 [<EntryPoint>]
 let main argv = 
     Console.Write("Введите число: ")
     let num = Console.ReadLine() |> int
-    Console.WriteLine($"Сумма цифр числа: {sumDigitsUp num}")
+    Console.WriteLine($"Сумма цифр числа (вверх): {sumDigitsUp num}")
+    Console.WriteLine($"Сумма цифр числа (вниз): {sumDigitsDown num}")
 
 
     0
