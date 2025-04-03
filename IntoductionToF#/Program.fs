@@ -19,6 +19,12 @@ let SumOrFact flag =
     | true -> sumDigitsDown
     | false -> factDigit
 
+let rec thingsDigits num (func: int->int->int) acc =
+    match num with
+    | 0 -> acc
+    | someth -> thingsDigits (someth / 10) func (func acc (someth % 10))
+
+
 
 
 
@@ -26,7 +32,10 @@ let SumOrFact flag =
 let main argv = 
     Console.Write("Введите число: ")
     let num = Console.ReadLine() |> int
-    Console.WriteLine($"Ответ: {((SumOrFact true) num)}")
+    Console.WriteLine($"Сумма: {thingsDigits num (fun x y -> x + y) 0  }")
+    Console.WriteLine($"Произведение: {thingsDigits num (fun x y -> x * y) 1  }")
+    Console.WriteLine($"Максимальный: {thingsDigits num (fun x y -> if x > y then x else y) 0 }")
+    Console.WriteLine($"Минимальный: {thingsDigits num (fun x y -> if x < y then x else y) 10 }")
 
 
     0
