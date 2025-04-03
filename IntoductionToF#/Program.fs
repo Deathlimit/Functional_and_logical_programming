@@ -22,7 +22,7 @@ let SumOrFact flag =
 let rec thingsDigits num (func: int->int->int) acc =
     match num with
     | 0 -> acc
-    | someth -> thingsDigits (someth / 10) func (func acc (someth % 10))
+    | someth -> thingsDigits (someth / 10) func (func acc (abs(someth) % 10))
 
 
 
