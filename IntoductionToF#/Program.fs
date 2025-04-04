@@ -34,18 +34,24 @@ let rec thingsDigitsCondition num (func: int->int->int) acc (condition: int->boo
         | true -> thingsDigitsCondition (someth / 10) func (func acc (someth % 10)) condition
         | false -> thingsDigitsCondition (someth / 10) func acc condition
 
+let chooseLanguage lang =
+    match lang with
+    | "F#" -> "Podliza"
+    | "Prolog" -> "Ultra podliza"
+    | "Ruby" -> ":))"
+    | someth -> "Kryto"
+
 
 
 
 
 [<EntryPoint>]
 let main argv = 
-    Console.Write("Введите число: ")
-    let num = Console.ReadLine() |> int
-    Console.WriteLine($"Сумма цифр, которые больше 5: {thingsDigitsCondition num (fun x y -> (x + y)) 0 (fun z -> z > 5)}")
-    Console.WriteLine($"Произведение цифр, которые меньше 3: {thingsDigitsCondition num (fun x y -> (x * y)) 1 (fun z -> z < 3)}")
-    Console.WriteLine($"Максимальное чётное число: {thingsDigitsCondition num (fun x y -> if x > y then x else y) 0 (fun z -> z % 2 = 0)}")
-    Console.WriteLine($"Минимальное нечётное число: {thingsDigitsCondition num (fun x y -> if x < y then x else y) 10 (fun z -> z % 2 <> 0)}")
+    Console.Write("Введите любимый язык: ")
+    let answer = Console.ReadLine() |> string
+    let langResult = chooseLanguage answer
+    Console.WriteLine(langResult)
+    
 
     0
 
