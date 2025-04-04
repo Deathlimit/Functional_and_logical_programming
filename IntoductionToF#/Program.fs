@@ -74,6 +74,20 @@ let obhodProst num (func: int->int->int) init  =
             obhodProstLoop num func newAcc (current - 1)
     obhodProstLoop num func init num
 
+let obhodProstCondition num (func: int->int->int) init (condition: int -> bool)  =
+    let rec obhodProstLoop num func acc current condition =
+        match current with
+        | 0 -> acc
+        | someth ->
+            let newAcc =
+                let result = gcd num current
+                let flag = condition current
+                match result, flag with
+                | 1, true -> func acc current
+                | _, _ -> acc
+            obhodProstLoop num func newAcc (current - 1) condition
+    obhodProstLoop num func init num condition
+
 
 let EulerFinder num = 
     obhodProst num (fun x y -> x + 1) 0
@@ -86,11 +100,11 @@ let EulerFinder num =
 let main argv = 
     Console.Write("Введите число: ")
     let num = Console.ReadLine() |> int
-    Console.WriteLine($"Сумма: {obhodProst num (fun x y -> x + y) 0  }")
-    Console.WriteLine($"Произведение: {obhodProst num (fun x y -> x * y) 1  }")
-    Console.WriteLine($"Максимальный: {obhodProst num (fun x y -> if x > y then x else y) 0 }")
-    Console.WriteLine($"Минимальный: {obhodProst num (fun x y -> if x < y then x else y) 10 }")
-    Console.WriteLine($"Эйлер: {EulerFinder num}")
+    Console.WriteLine($"Сумма: {obhodProstCondition num (fun x y -> x + y) 0 (fun x -> if x > 8 then false else true)}")
+    Console.WriteLine($"Произведение: {obhodProstCondition num (fun x y -> x * y) 1  (fun x -> if x > 8 then false else true)}")
+    Console.WriteLine($"Максимальный: {obhodProstCondition num (fun x y -> if x > y then x else y) 0 (fun x -> if x > 8 then false else true)}")
+    Console.WriteLine($"Минимальный: {obhodProstCondition num (fun x y -> if x < y then x else y) 10 (fun x -> if x > 8 then false else true)}")
+    Console.WriteLine($"Эйлер: {EulerFinder num }")
 
     
 
