@@ -41,16 +41,27 @@ let chooseLanguage lang =
     | "Ruby" -> ":))"
     | someth -> "Kryto"
 
+let chooseLanguageSuperPos () = 
+    Console.Write("Введите любимый язык: ")
+    (Console.ReadLine >> chooseLanguage >> Console.WriteLine)
+
+let chooseLanguageCurry () = 
+    Console.Write("Введите любимый язык: ")
+    let subChooseLanguageCurry reader func writer =
+        let answer = reader()
+        let langResult = func answer
+        writer langResult
+    subChooseLanguageCurry Console.ReadLine chooseLanguage Console.WriteLine
 
 
 
 
 [<EntryPoint>]
 let main argv = 
-    Console.Write("Введите любимый язык: ")
-    let answer = Console.ReadLine() |> string
-    let langResult = chooseLanguage answer
-    Console.WriteLine(langResult)
+    chooseLanguageSuperPos()
+
+    chooseLanguageCurry()
+
     
 
     0
