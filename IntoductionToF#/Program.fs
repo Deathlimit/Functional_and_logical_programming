@@ -111,13 +111,21 @@ let maxProstDel num =
         | _ -> maxProstDelLoop max (del+1)
     maxProstDelLoop 0 2
 
+let multDigitsCondition num (condition: int -> bool) =
+    let rec multDigitsConditionLoop acc num =
+        match num with
+        | 0 -> acc
+        | _ when condition (num % 10) -> multDigitsConditionLoop (acc * (num % 10)) (num / 10)
+        | _ -> multDigitsConditionLoop acc (num / 10)
+    multDigitsConditionLoop 1 num
+
 
 
 [<EntryPoint>]
 let main argv = 
     Console.Write("Введите число: ")
     let num = Console.ReadLine() |> int
-    Console.WriteLine($"Максимальный простой делитель числа: {maxProstDel num}")
+    Console.WriteLine($"Произведение цифр числа, не делящихся на 5: {multDigitsCondition num (fun x -> if x = 5 then false else true)}")
 
     0
 
