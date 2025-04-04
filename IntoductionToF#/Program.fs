@@ -101,7 +101,14 @@ let isPrime num =
             | _ when num % curr = 0 -> false
             | _ -> isPrimeLoop (curr + 1)
         isPrimeLoop 2
-        
+ 
+let maxProstDel num =
+     let rec maxProstDelLoop max del =
+         match del with
+         | _ when del > num -> max
+         | _ when (num % del = 0) && (isPrime del) -> maxProstDelLoop del (del+1)
+         | _ -> maxProstDelLoop max (del+1)
+     maxProstDelLoop 0 2
 
 let maxNeProstDel num =
     let rec maxNeProstDelLoop max del =
@@ -111,27 +118,54 @@ let maxNeProstDel num =
         | _ -> maxNeProstDelLoop max (del+1)
     maxNeProstDelLoop 0 2
 
-let multDigitsCondition num =
-    let rec multDigitsConditionLoop acc num =
+let multDigitsCondition (condition: int -> bool) num  =
+     let rec multDigitsConditionLoop acc num =
+         match num with
+         | 0 -> acc
+         | _ when condition (num % 10) -> multDigitsConditionLoop (acc * (num % 10)) (num / 10)
+         | _ -> multDigitsConditionLoop acc (num / 10)
+     multDigitsConditionLoop 1 num
+
+let multDigits num =
+    let rec multDigitsLoop acc num =
         match num with
         | 0 -> acc
-        | _ -> multDigitsConditionLoop (acc * (num % 10)) (num / 10)
-    multDigitsConditionLoop 1 num
+        | _ -> multDigitsLoop (acc * (num % 10)) (num / 10)
+    multDigitsLoop 1 num
 
 
 
 let findNODDelMult num =
     let Del = maxNeProstDel num
-    let Mult = multDigitsCondition num
+    let Mult = multDigits num
     gcd Del Mult
+
+
+let chooseFunc ans = 
+    match ans with 
+    | 1 -> maxProstDel 
+    | 2 -> multDigitsCondition (fun x -> if x = 5 then false else true)
+    | 3 -> findNODDelMult 
+    | _ -> failwith "Ошибка"
+
+let chooseFuncSuperPos =
+    chooseFunc >> (fun f -> f) 
+
+let chooseFuncCyrr (ans, num) =
+    (chooseFunc ans) num
+    
 
 
 
 [<EntryPoint>]
 let main argv = 
-    Console.Write("Введите число: ")
-    let num = Console.ReadLine() |> int
-    Console.WriteLine($"НОД максимального нечетного непростого делителя числа и прозведения цифр данного числа : {findNODDelMult num}")
+    Console.WriteLine("Введите два числа через пробел:")
+    let input = Console.ReadLine().Split()
+    let tuple = (int input.[0], int input.[1])
+    Console.WriteLine($"Суперпозиция:{(chooseFuncSuperPos (fst tuple)) (snd tuple)}")
+    Console.WriteLine($"Каррирование:{chooseFuncCyrr tuple}")
+
+
 
     0
 
