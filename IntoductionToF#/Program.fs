@@ -53,13 +53,13 @@ let chooseLanguageCurry () =
         writer langResult
     subChooseLanguageCurry Console.ReadLine chooseLanguage Console.WriteLine
 
+
+
+
 let rec gcd x y = 
-    match y with
-    | 0 -> x
-    | someth -> gcd y (x%y)
-
-
-
+   match y with
+   | 0 -> x
+   | someth -> gcd y (x%y)
 
 let obhodProst num (func: int->int->int) init  =
     let rec obhodProstLoop num func acc current =
@@ -103,21 +103,27 @@ let isPrime num =
         isPrimeLoop 2
         
 
-let maxProstDel num =
-    let rec maxProstDelLoop max del =
+let maxNeProstDel num =
+    let rec maxNeProstDelLoop max del =
         match del with
         | _ when del > num -> max
-        | _ when (num % del = 0) && (isPrime del) -> maxProstDelLoop del (del+1)
-        | _ -> maxProstDelLoop max (del+1)
-    maxProstDelLoop 0 2
+        | _ when (num % del = 0) && (isPrime del = false) && (del % 2 <> 0) -> maxNeProstDelLoop del (del+1)
+        | _ -> maxNeProstDelLoop max (del+1)
+    maxNeProstDelLoop 0 2
 
-let multDigitsCondition num (condition: int -> bool) =
+let multDigitsCondition num =
     let rec multDigitsConditionLoop acc num =
         match num with
         | 0 -> acc
-        | _ when condition (num % 10) -> multDigitsConditionLoop (acc * (num % 10)) (num / 10)
-        | _ -> multDigitsConditionLoop acc (num / 10)
+        | _ -> multDigitsConditionLoop (acc * (num % 10)) (num / 10)
     multDigitsConditionLoop 1 num
+
+
+
+let findNODDelMult num =
+    let Del = maxNeProstDel num
+    let Mult = multDigitsCondition num
+    gcd Del Mult
 
 
 
@@ -125,7 +131,7 @@ let multDigitsCondition num (condition: int -> bool) =
 let main argv = 
     Console.Write("Введите число: ")
     let num = Console.ReadLine() |> int
-    Console.WriteLine($"Произведение цифр числа, не делящихся на 5: {multDigitsCondition num (fun x -> if x = 5 then false else true)}")
+    Console.WriteLine($"НОД максимального нечетного непростого делителя числа и прозведения цифр данного числа : {findNODDelMult num}")
 
     0
 
