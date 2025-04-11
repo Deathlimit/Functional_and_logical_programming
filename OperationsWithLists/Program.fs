@@ -123,6 +123,29 @@ let alternateSigns arr =
         if head = 0 then false
         else checkAlternate head tail
 
-let list = [5; -3; 1; -2; 4; -1]
-System.Console.WriteLine(alternateSignsUsingList list) 
-System.Console.WriteLine(alternateSigns list)
+let countMinElementsUsingList (arr: int list) =
+    let minVal = List.min arr
+    arr 
+    |> List.filter (fun x -> x = minVal) 
+    |> List.length
+
+let countMinElements arr =
+    let rec findMin currentMin = function
+        | [] -> currentMin
+        | head::tail -> findMin (min head currentMin) tail
+        
+    let rec countOccurr count element = function
+        | [] -> count
+        | head::tail -> 
+            if head = element then countOccurr (count + 1) element tail
+            else countOccurr count element tail
+        
+    match arr with
+    | [] -> 0
+    | head::tail ->
+        let minVal = findMin head tail
+        countOccurr 0 minVal arr
+
+let list = [5; -3; 1; -2; 4; -3; -3]
+System.Console.WriteLine(countMinElementsUsingList list) 
+System.Console.WriteLine(countMinElements list)
