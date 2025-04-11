@@ -69,6 +69,36 @@ let moveBeforeMinToEnd arr =
             let beforeMin, fromMin = splitAt minIndex [] arr
             append fromMin beforeMin
 
-let list = [5; 3; 1; 2; 4]
-System.Console.WriteLine(moveBeforeMinToEndUsingList list) 
-System.Console.WriteLine(moveBeforeMinToEnd list)
+let findTwoSmallestUsingList (arr: int list) =
+    match arr with
+    | [] | [_] -> []
+    | _ ->
+        arr
+        |> List.sort          
+        |> List.take 2
+
+
+let findTwoSmallest arr =
+    let rec updateMinValues x (min1, min2) =
+        match x with
+        | _ when x < min1 -> (x, min1) 
+        | _ when x < min2 -> (min1, x)
+        | _ -> (min1, min2)
+
+    let rec findTwoSmallest acc = function
+        | [] -> acc
+        | head::tail ->
+            let newAcc = updateMinValues head acc
+            findTwoSmallest newAcc tail
+
+    match arr with
+    | [] | [_] -> []
+    | fst::snd::tail ->
+        let initial = if fst < snd then (fst, snd) else (snd, fst)
+        let (min1, min2) = findTwoSmallest initial tail
+        [min1; min2]
+
+
+let list = [5; 3; 1; 2; 4; 1]
+System.Console.WriteLine(findTwoSmallestUsingList list) 
+System.Console.WriteLine(findTwoSmallest list)
