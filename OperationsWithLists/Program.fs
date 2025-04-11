@@ -201,5 +201,24 @@ let shuffleWords (input: string) =
     |> List.sortBy (fun _ -> rnd.Next()) 
     |> String.concat " "
 
+let medianSort (strings: string list) =
+    let rec extractMedians (current: (string * int) list) acc =
+        match current with
+        | [] -> acc |> List.rev
+        | _ ->
+            let sorted = current |> List.sortBy snd
+            let n = List.length sorted
 
-System.Console.WriteLine(shuffleWords "Ya o4eHb lublu F# He") 
+            let medianIndex = if n % 2 = 0 then (n / 2 - 1) else (n / 2)
+            let median = sorted.[medianIndex]
+
+            let remaining = sorted |> List.filter (fun x -> x <> median)
+            extractMedians remaining (fst median :: acc)
+
+    let withLengths = strings |> List.map (fun s -> (s, s.Length))
+    extractMedians withLengths []
+
+
+let strings = ["Apple"; "Banana"; "Cherry"; "F#"; "KUBSU"]
+let sorted = medianSort strings
+System.Console.WriteLine(sorted) 
