@@ -218,7 +218,22 @@ let medianSort (strings: string list) =
     let withLengths = strings |> List.map (fun s -> (s, s.Length))
     extractMedians withLengths []
 
+let processList (lst: int list) =
+    let list1 = lst |> List.filter (fun x -> x % 2 = 0) |> List.map (fun x -> x / 2)
+    let list2 = list1 |> List.filter (fun x -> x % 3 = 0) |> List.map (fun x -> x / 3)
+    let list3 = list2 |> List.map (fun x -> x * x)
+    let list4 = list3 |> List.filter (fun x -> List.contains x list1)
+    let list5 = List.concat [list2; list3; list4]
+    (list1, list2, list3, list4, list5)
 
-let strings = ["Apple"; "Banana"; "Cherry"; "F#"; "KUBSU"]
-let sorted = medianSort strings
-System.Console.WriteLine(sorted) 
+let pyfagorTriples (lst: int list) =
+    lst 
+    |> List.allPairs lst 
+    |> List.allPairs lst 
+    |> List.map (fun (a, (b, c)) -> [a; b; c])
+    |> List.filter (fun [a; b; c] -> a < b && b < c && a*a + b*b = c*c)
+    |> List.distinct
+
+
+let list = [1; 2; 3; 4; 5; 6]
+System.Console.WriteLine(pyfagorTriples list) 
