@@ -1,4 +1,6 @@
-﻿let isGlobalMax arr index =
+﻿open System
+
+let isGlobalMax arr index =
     let findMax list =
         let rec loop acc = function
             | [] -> acc
@@ -190,6 +192,14 @@ let buildNewList arr =
     let condition x = float x > average && x < maxVal
     filterList condition [] arr
 
-let list = [5; -3; 1; -2; 4; -3; -3]
-System.Console.WriteLine(buildNewListUsingList list) 
-System.Console.WriteLine(buildNewList list)
+
+let shuffleWords (input: string) =
+    let words = input.Split([|' '|])
+    let rnd = Random()
+    words 
+    |> Array.toList
+    |> List.sortBy (fun _ -> rnd.Next()) 
+    |> String.concat " "
+
+
+System.Console.WriteLine(shuffleWords "Ya o4eHb lublu F# He") 
