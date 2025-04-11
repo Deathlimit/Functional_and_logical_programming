@@ -146,6 +146,50 @@ let countMinElements arr =
         let minVal = findMin head tail
         countOccurr 0 minVal arr
 
+let buildNewListUsingList (arr: int list) =
+    let sum = List.sum arr
+    let length = List.length arr
+    let average = float sum / float length
+    let maxVal = List.max arr
+    arr 
+    |> List.filter (fun x -> 
+        float x > average && x < maxVal
+    )
+
+let buildNewList arr =
+    let rec sumList acc = function
+        | [] -> acc
+        | head::tail -> sumList (acc + head) tail
+        
+    let rec lengthList acc = function
+        | [] -> acc
+        | head::tail -> lengthList (acc + 1) tail
+        
+    let rec maxList currentMax = function
+        | [] -> currentMax
+        | head::tail -> maxList (max head currentMax) tail
+
+    let reverseList list =
+        let rec loop acc = function
+            | [] -> acc
+            | head::tail -> loop (head::acc) tail
+        loop [] list
+        
+    let rec filterList condition acc = function
+        | [] -> reverseList acc
+        | head::tail ->
+            if condition head then
+                filterList condition (head::acc) tail
+            else
+                filterList condition acc tail
+        
+    let sum = sumList 0 arr
+    let length = lengthList 0 arr
+    let average = float sum / float length
+    let maxVal = maxList -1000 arr
+    let condition x = float x > average && x < maxVal
+    filterList condition [] arr
+
 let list = [5; -3; 1; -2; 4; -3; -3]
-System.Console.WriteLine(countMinElementsUsingList list) 
-System.Console.WriteLine(countMinElements list)
+System.Console.WriteLine(buildNewListUsingList list) 
+System.Console.WriteLine(buildNewList list)
