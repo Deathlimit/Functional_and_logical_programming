@@ -98,7 +98,31 @@ let findTwoSmallest arr =
         let (min1, min2) = findTwoSmallest initial tail
         [min1; min2]
 
+let alternateSignsUsingList (arr: int list) =
+    let pairs = List.pairwise arr
+    let allAlternate = 
+        pairs 
+        |> List.forall (fun (a, b) -> 
+            (a > 0 && b < 0) || (a < 0 && b > 0)
+        )
+    allAlternate
 
-let list = [5; 3; 1; 2; 4; 1]
-System.Console.WriteLine(findTwoSmallestUsingList list) 
-System.Console.WriteLine(findTwoSmallest list)
+let alternateSigns arr =
+    let rec checkAlternate prev = function
+        | [] -> true
+        | head::tail ->
+            if head = 0 then false
+            elif (prev > 0 && head < 0) || (prev < 0 && head > 0) then 
+                checkAlternate head tail
+            else 
+                false
+        
+    match arr with
+    | [] -> true
+    | head::tail ->
+        if head = 0 then false
+        else checkAlternate head tail
+
+let list = [5; -3; 1; -2; 4; -1]
+System.Console.WriteLine(alternateSignsUsingList list) 
+System.Console.WriteLine(alternateSigns list)
