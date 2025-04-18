@@ -1,52 +1,33 @@
 ﻿open System
 
 
-type IPrint =
-    abstract Print : unit -> unit
+type GeometricFigure =
+    | Rectangle of width: float * height: float
+    | Square of side: float
+    | Circle of radius: float
 
 
-[<AbstractClass>]
-type GeometricFigure() =
-    abstract Area : float
+let calculateArea figure =
+    match figure with
+    | Rectangle(width, height) -> width * height
+    | Square(side) -> side * side
+    | Circle(radius) -> Math.PI * radius ** 2.0
 
 
-type Rectangle(width: float, height: float) =
-    inherit GeometricFigure()
-    member this.Width = width
-    member this.Height = height
-    override this.Area = this.Width * this.Height
-    override this.ToString() = 
-        sprintf $"Прямоугольник: ширина {this.Width}, высота {this.Height}, площадь {this.Area}"
-    interface IPrint with
-        member this.Print() = Console.WriteLine(this.ToString())
+let printFigure figure =
+    match figure with
+    | Rectangle(w, h) ->
+        Console.WriteLine($"Прямоугольник: {w} x {h}: площадь {(calculateArea figure)}")
+    | Square(s) ->
+        Console.WriteLine($"Квадрат: {s}: площадь {(calculateArea figure)}")
+    | Circle(r) ->
+        Console.WriteLine($"Круг: {r}: площадь {(calculateArea figure)}")
 
 
-type Square(side: float) =
-    inherit Rectangle(side, side)
-    override this.ToString() = 
-        sprintf $"Квадрат: сторона {this.Width}, площадь {this.Area}"
+let figures = [
+    Rectangle(3.0, 4.0)
+    Square(5.0)
+    Circle(2.0)
+]
 
-
-type Circle(radius: float) =
-    inherit GeometricFigure()
-    member this.Radius = radius
-    override this.Area = Math.PI * this.Radius ** 2.0
-    override this.ToString() = 
-        sprintf $"Круг: радиус {this.Radius}, площадь {this.Area}"
-    interface IPrint with
-        member this.Print() = Console.WriteLine(this.ToString())
-
-
-let printFigure (figure: IPrint) = figure.Print()
-
-let rect = Rectangle(8.0, 9.0)
-let square = Square(5.0)
-let circle = Circle(3.0)
-
-printFigure rect
-printFigure square
-printFigure circle
-
-Console.WriteLine($"ToString: {rect}") 
-Console.WriteLine($"ToString: {square}") 
-Console.WriteLine($"ToString: {circle}") 
+figures |> List.iter printFigure
