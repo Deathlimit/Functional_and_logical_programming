@@ -90,5 +90,19 @@ main3:-
 
 
 
+%-----------------------------------------------------------------------
 
+surnames([borisov, ivanov, semenov]).
+professions([slesapb, tokapb, svarshik]).
+
+
+solution(SlesaPb, TokaPb, Svarshik) :-
+    permutation([SlesaPb, TokaPb, Svarshik], [borisov, ivanov, semenov]),
+    SlesaPb \= borisov,              
+    Svarshik = semenov,                 
+    SlesaPb = ivanov.         
+
+start :-
+    solution(SlesaPb, TokaPb, Svarshik),
+    format('SlesaPb: ~w~nTokaPb: ~w~nSvarshik: ~w~n', [SlesaPb, TokaPb, Svarshik]).
 
